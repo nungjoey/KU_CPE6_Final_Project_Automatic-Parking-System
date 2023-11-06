@@ -513,6 +513,8 @@ class MainWindow(QMainWindow):
                 self.ui.after_barier_status_label.setText("ไม่พบข้อมูล")   
         except:
             self.ui.after_barier_status_label.setText("ไม่สำเร็จ")
+        self.ui.after_barier_status_label.clear()
+        
     
     
     def return_lot(self):
