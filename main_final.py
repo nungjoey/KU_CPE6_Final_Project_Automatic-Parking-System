@@ -74,11 +74,11 @@ class MainWindow(QMainWindow):
         self.ui.full_accept_btn.setChecked(True)
 
         self.timer1 = QTimer()
-        self.timer1.start(5000)
+        self.timer1.start(2000)
         self.timer1.timeout.connect(self.load_data_every5_second)
 
         self.timer2 = QTimer()
-        self.timer2.start(3000)
+        self.timer2.start(2000)
         self.timer2.timeout.connect(self.lot_status_check)
 
         self.ui.monitor1_btn.clicked.connect(self.smallscreen)
@@ -513,8 +513,7 @@ class MainWindow(QMainWindow):
                 self.ui.after_barier_status_label.setText("ไม่พบข้อมูล")   
         except:
             self.ui.after_barier_status_label.setText("ไม่สำเร็จ")
-        self.ui.after_barier_status_label.clear()
-        
+        self.ui.after_barier_edit.clear()
     
     
     def return_lot(self):
