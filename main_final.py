@@ -17,6 +17,7 @@ from main_check_lot import *
 # bay_order=["A","F","C","B","G","D","H","E"]
 bay_order=[]
 zone_order=["1","2"]
+parked_lot_old=[]
 parked_lot=[]
 empty_index = []
 
@@ -72,10 +73,6 @@ class MainWindow(QMainWindow):
         self.ui.icon_only_widget.hide()
         self.ui.stackedWidget.setCurrentIndex(0)
         self.ui.full_accept_btn.setChecked(True)
-
-        self.timer1 = QTimer()
-        self.timer1.start(2000)
-        self.timer1.timeout.connect(self.load_data_every5_second)
 
         self.timer2 = QTimer()
         self.timer2.start(2000)
@@ -167,36 +164,22 @@ class MainWindow(QMainWindow):
         except:
             self.ui.full_lot_label.setText("พบปัญหา แจ้ง Admin")
     
-    def load_data_every5_second(self):
-        a.clear()
-        b.clear()
-        c.clear()
-        d.clear()
-        e.clear()
-        f.clear()
-        g.clear()
-        h.clear()
-
-        oha.clear()
-        ohb.clear()
-        ohc.clear()
-        ohd.clear()
-        ohe.clear()
-        ohf.clear()
-        ohg.clear()
-        ohh.clear()
-
+    
+    def get_lot(self):
         #bay_a : bay_id='1'
         mycursor = mydb.cursor()
         mycursor.execute("SELECT number FROM lot WHERE status_id='1' AND bay_id='1' AND parking_type_id='0'")
         normal_zone_result=mycursor.fetchall()
         for row in normal_zone_result:
             a.append(row[0])
+        # print(a)
             
         mycursor.execute("SELECT number FROM lot WHERE status_id='1' AND bay_id='1' AND parking_type_id='1'")
         over_zone_result = mycursor.fetchall()
         for row in over_zone_result:
             oha.append(row[0])
+
+        # print(oha)
             
         #bay_b : bay_id='2'
         mycursor.execute("SELECT number FROM lot WHERE status_id='1' AND bay_id='2' AND parking_type_id='0'")
@@ -274,8 +257,7 @@ class MainWindow(QMainWindow):
         over_zone_result = mycursor.fetchall()
         for row in over_zone_result:
             ohh.append(row[0])
-
-    def get_lot(self):
+            
         data_api = []
 
         response = requests.get('http://127.0.0.1:8000/cars/1')
@@ -283,19 +265,16 @@ class MainWindow(QMainWindow):
         height=(199,180)
         api_height = random.choice(height)
 
-        # api_height = int(response.json()['height'])
         data_api.append(api_noplate)
         data_api.append(api_height)
-        # print("data from api now in list:",data_api)
-        # print(data_api)
-        # print(oz)
+        
         self.ui.api_hight_status_label.setText(str(api_height))
-        # print(api_height)
+        
         
         car_height = int(data_api[1])
         parking_lot = None
-        # print(car_height)
-        while True:
+
+        try:
             for _ in range(8):
                 if car_height >= 190:
                     removed_element = bay_order.pop(0)
@@ -305,6 +284,7 @@ class MainWindow(QMainWindow):
                     # if len(oz[removed_element]) == 0:
                     #     continue
                     if len(oz[removed_element]) == 0:
+                        # continue
                         if len(nz[removed_element]) == 0:
                             continue
                         else:
@@ -329,7 +309,7 @@ class MainWindow(QMainWindow):
                         old_lot_id.append(row)
 
                     value = (old_data)
-                    updatedb = '''UPDATE lot SET status_id = "3" WHERE lot_id = %s'''
+                    updatedb = '''UPDATE lot SET status_id ="3" WHERE lot_id = %s'''
                     try:
                         mycursor.execute(updatedb, value)
                         mydb.commit()
@@ -340,7 +320,7 @@ class MainWindow(QMainWindow):
                     card_id = self.ui.lineEdit.text()
                     id_now = old_data[0]
                     value2 = (id_now, card_id)
-                    updatedb2 = '''UPDATE card SET lot_id = %s, status_id = "3" WHERE card_id = %s'''
+                    updatedb2 = '''UPDATE card SET lot_id = %s, status_id ="3" WHERE card_id = %s'''
                     try:
                         mycursor.execute(updatedb2, value2)
                         mydb.commit()
@@ -385,6 +365,7 @@ class MainWindow(QMainWindow):
 
                     mydb.commit()
                     return parked_lot
+                    
                 else:
                     removed_element = bay_order.pop(0)            
                     bay_order.append(removed_element)
@@ -393,6 +374,7 @@ class MainWindow(QMainWindow):
                     #     continue
                     # parking_lot = nz[removed_element].pop(0)
                     if len(nz[removed_element]) == 0:
+                        # continue
                         if len(oz[removed_element]) == 0:
                             continue
                         else:
@@ -483,8 +465,12 @@ class MainWindow(QMainWindow):
                         ''', (card_id_in_list, height_in_list, lp_in_list, lot_id_in_list, timestamp_in_list))
 
                     mydb.commit()
-                    return parked_lot
+                    # print(parked_lot)
+                    return parked_lot  
             return parking_lot
+        except:
+            self.ui.accept_status_label.setText("มีปัญหาในการรับช่องจอด")
+        
 
     def after_barier_update(self):
         after_barier_data = []
@@ -523,8 +509,8 @@ class MainWindow(QMainWindow):
         mycursor.execute('''SELECT number, status_id FROM lot WHERE status_id=7 ''')
         old_return_data = mycursor.fetchall()
         for row in old_return_data:
-            parked_lot.append(row[1])
             parked_lot.append(row[0])
+
         # print("information to return :",parked_lot)
         
         mycursor = mydb.cursor()
@@ -545,14 +531,16 @@ class MainWindow(QMainWindow):
             # Check if the lot number is in the list of parked_lot
             lot_no_list = number
             if lot_no_list in parked_lot:
+                parked_lot_old.append(lot_no_list)
+                # print("list old pk : ",parked_lot_old)
                 # Construct and execute the SQL query to update the row for 'lot' table
                 update_query_lot = "UPDATE lot SET status_id = '1' WHERE number = %s"
                 mycursor.execute(update_query_lot, (lot_no_list,))
                 mydb.commit()
 
                 # Construct and execute the SQL query to update the row for 'card' table
-                update_query_card = "UPDATE card SET lot_id=%s, status_id='1' WHERE lot_id=%s"
-                mycursor.execute(update_query_card, (None, lot_id))  # Assuming None means no lot assigned
+                update_query_card = "UPDATE card SET user_height=%s, user_license_plate=%s, lot_id=%s, status_id='1' WHERE lot_id=%s"
+                mycursor.execute(update_query_card, (None, None, None, lot_id))  # Assuming None means no lot assigned
                 mydb.commit()
 
                 # Insert time_out into history table
@@ -569,8 +557,12 @@ class MainWindow(QMainWindow):
                                         WHERE card_id = %s AND time_out IS NULL''', (current_time_out, id_no))
                     mydb.commit()
 
+                parked_lot_old.clear()
+                parked_lot.remove(lot_no_list)
+                # print("old list after pop",parked_lot)
                 # print("ข้อมูล lot หลังดึงข้อมูล:", current_time_out)
-                
+                # parked_lot.pop(parked_lot[str(lot_no_list)])
+                # print("after return lot",parked_lot)
                 self.ui.return_status_label.setText("คืนเรียบร้อย")
             else:
                 self.ui.return_status_label.setText("ไม่เจอช่องจอดที่จอดไปแล้ว")
