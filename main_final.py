@@ -178,7 +178,6 @@ class MainWindow(QMainWindow):
         over_zone_result = mycursor.fetchall()
         for row in over_zone_result:
             oha.append(row[0])
-
         # print(oha)
             
         #bay_b : bay_id='2'
@@ -364,6 +363,23 @@ class MainWindow(QMainWindow):
                         ''', (card_id_in_list, height_in_list, lp_in_list, lot_id_in_list, timestamp_in_list))
 
                     mydb.commit()
+
+                    a.clear()
+                    b.clear()
+                    c.clear()
+                    d.clear()
+                    e.clear()
+                    f.clear()
+                    g.clear()
+                    h.clear()
+                    oha.clear()
+                    ohb.clear()
+                    ohc.clear()
+                    ohd.clear()
+                    ohe.clear()
+                    ohf.clear()
+                    ohg.clear()
+                    ohh.clear()
                     return parked_lot
                     
                 else:
@@ -465,6 +481,23 @@ class MainWindow(QMainWindow):
                         ''', (card_id_in_list, height_in_list, lp_in_list, lot_id_in_list, timestamp_in_list))
 
                     mydb.commit()
+
+                    a.clear()
+                    b.clear()
+                    c.clear()
+                    d.clear()
+                    e.clear()
+                    f.clear()
+                    g.clear()
+                    h.clear()
+                    oha.clear()
+                    ohb.clear()
+                    ohc.clear()
+                    ohd.clear()
+                    ohe.clear()
+                    ohf.clear()
+                    ohg.clear()
+                    ohh.clear()
                     # print(parked_lot)
                     return parked_lot  
             return parking_lot
