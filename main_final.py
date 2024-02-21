@@ -13,6 +13,7 @@ from mainsmall import *
 from main_controller_z1 import *
 from main_controller_z2 import *
 from main_check_lot import *
+from main_check_broken import *
 
 # bay_order=["A","F","C","B","G","D","H","E"]
 bay_order=[]
@@ -86,6 +87,7 @@ class MainWindow(QMainWindow):
         self.ui.controller_z1_btn.clicked.connect(self.controller_z1_screen)
         self.ui.controller_z2_btn.clicked.connect(self.controller_z2_screen)
         self.ui.check_lot_btn.clicked.connect(self.check_lot_screen)
+        self.ui.check_broken_btn.clicked.connect(self.check_broken_screen)
         self.ui.after_barier_btn.clicked.connect(self.after_barier_update)
         self.ui.clear_accept_db_btn.clicked.connect(self.clear_accept)
         self.ui.clear_return_db_btn.clicked.connect(self.clear_return)
@@ -140,6 +142,9 @@ class MainWindow(QMainWindow):
         self.ui.maincheck = MainChecklotWindow()
         self.ui.maincheck.show()
 
+    def check_broken_screen(self):
+        self.ui.maincheck = MainChecklotWindow()
+        self.ui.maincheck.show()
     #แก้ตรงนี้ไอ่ควาย
     def lot_status_check(self):
 
@@ -278,16 +283,16 @@ class MainWindow(QMainWindow):
                 if car_height >= 190:
                     removed_element = bay_order.pop(0)
                     bay_order.append(removed_element)
-
+                   
                     # ตรวจสอบ normal zone ถ้าเต็มให้ใช้ over zone แทน
                     # if len(oz[removed_element]) == 0:
                     #     continue
-                    if len(oz[removed_element]) == 0:
+                    if len(oz[removed_element]) == 1:
                         # continue
                         if len(nz[removed_element]) == 0:
                             continue
                         else:
-                            parking_lot = nz[removed_element].pop(0)
+                            parking_lot = nz[removed_element].pop(1)
                     else:
                         parking_lot = oz[removed_element].pop(0)
 

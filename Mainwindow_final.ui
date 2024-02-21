@@ -1689,10 +1689,37 @@
     background-color: #580EF6;
     color: #fff;
     border-radius: 20px;
-}</string>
                    </property>
                    <property name="text">
                     <string>ดูช่องจอดทั้งหมด</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="check_broken_btn">
+                   <property name="font">
+                    <font>
+                     <family>Mitr SemiBold</family>
+                     <pointsize>14</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#check_broken_btn{
+    border: none;
+	padding: 10px;
+    background-color: #000000;
+    color: #fff;
+    border-radius: 20px;
+}
+#check_broken_btn:hover{
+    border: none;
+	padding: 10px;
+    background-color: #FF0606;
+    color: #fff;
+    border-radius: 20px;
+                   </property>
+                   <property name="text">
+                    <string>สถานะช่องจอด</string>
                    </property>
                   </widget>
                  </item>

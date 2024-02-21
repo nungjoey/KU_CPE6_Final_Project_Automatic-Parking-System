@@ -698,6 +698,29 @@ class Ui_MainWindow(object):
 "}")
         self.check_lot_btn.setObjectName("check_lot_btn")
         self.horizontalLayout_7.addWidget(self.check_lot_btn)
+        
+        self.check_broken_btn = QtWidgets.QPushButton(self.frame_24)
+        font = QtGui.QFont()
+        font.setFamily("Mitr SemiBold")
+        font.setPointSize(14)
+        self.check_broken_btn.setFont(font)
+        self.check_broken_btn.setStyleSheet("#check_broken_btn{\n"
+"    border: none;\n"
+"    padding: 10px;\n"
+"    background-color: #000000;\n"
+"    color: #fff;\n"
+"    border-radius: 20px;\n"
+"}\n"
+"#check_broken_btn:hover{\n"
+"    border: none;\n"
+"    padding: 10px;\n"
+"    background-color: #580EF6;\n"
+"    color: #fff;\n"
+"    border-radius: 20px;\n"
+"}")
+        self.check_broken_btn.setObjectName("check_broken_btn")
+        self.horizontalLayout_7.addWidget(self.check_broken_btn)
+        
         spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_7.addItem(spacerItem9)
         self.verticalLayout_6.addWidget(self.frame_24)
@@ -1141,6 +1164,7 @@ class Ui_MainWindow(object):
         self.controller_z1_btn.setText(_translate("MainWindow", "ตัวเรียกช่องจอด โซน 1"))
         self.controller_z2_btn.setText(_translate("MainWindow", "ตัวเรียกช่องจอด โซน 2"))
         self.check_lot_btn.setText(_translate("MainWindow", "ดูช่องจอดทั้งหมด"))
+        self.check_broken_btn.setText(_translate("MainWindow", "ตรวจสอบช่องจอดทั้งหมด"))
         self.label_3.setText(_translate("MainWindow", "อัพเดทสถานะเมื่อผ่านที่กั้น :"))
         self.after_barier_edit.setPlaceholderText(_translate("MainWindow", "ไอดีการ์ด"))
         self.after_barier_btn.setText(_translate("MainWindow", "อัพเดท"))
